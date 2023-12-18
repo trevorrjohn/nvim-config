@@ -13,12 +13,37 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    'dense-analysis/ale'
+  },
+  {
+    'vim-test/vim-test'
+  },
+  {
+    "tpope/vim-dispatch"
+  },
+  {
+    "tpope/vim-rails"
+  },
+  {
+    "preservim/vimux"
+  },
+  {
+    'preservim/nerdtree'
+  },
+  {
     'jacoborus/tender.vim',
     lazy = false,
   },
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.5',
     dependencies = { 'nvim-lua/plenary.nvim' },
+  },
+  {
+    'rose-pine/neovim',
+    as = 'rose-pine',
+    config = function()
+      vim.cmd('colorscheme rose-pine')
+    end
   },
   {
     "rebelot/kanagawa.nvim",
@@ -45,5 +70,14 @@ require("lazy").setup({
         indent = { enable = true },  
       })
     end
-    }
+  },
+  {
+    {'williamboman/mason.nvim'},
+    {'williamboman/mason-lspconfig.nvim'},
+    {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'hrsh7th/nvim-cmp'},
+    {'L3MON4D3/LuaSnip'},
+  }
 })
