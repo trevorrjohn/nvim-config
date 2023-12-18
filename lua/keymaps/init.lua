@@ -38,3 +38,23 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- save with W
 vim.keymap.set("c", "W", "w")
+
+-- Tab completion
+-- will insert tab at beginning of line,
+-- will use completion if not at beginning
+vim.cmd[[
+  set wildmode=list:longest,list:full
+  function! InsertTabWrapper()
+      let col = col('.') - 1
+      if !col || getline('.')[col - 1] !~ '\k'
+          return "\<Tab>"
+      else
+          return "\<C-p>"
+      endif
+  endfunction
+  inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
+  inoremap <S-Tab> <C-n>
+]]
+
+-- Switch between the last two files
+vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
