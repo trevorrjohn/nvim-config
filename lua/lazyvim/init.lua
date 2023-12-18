@@ -13,23 +13,28 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
-    'dense-analysis/ale'
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({})
+    end,
   },
-  {
-    'vim-test/vim-test'
-  },
-  {
-    "tpope/vim-dispatch"
-  },
-  {
-    "tpope/vim-rails"
-  },
-  {
-    "preservim/vimux"
-  },
-  {
-    'preservim/nerdtree'
-  },
+  { 'dense-analysis/ale' },
+  { 'tpope/vim-bundler' },
+  { 'tpope/vim-endwise' },
+  { 'tpope/vim-eunuch' },
+  { 'tpope/vim-fugitive' },
+  { 'tpope/vim-projectionist' },
+  { 'tpope/vim-rails' },
+  { 'tpope/vim-rake' },
+  { 'tpope/vim-repeat' },
+  { 'tpope/vim-rhubarb' },
+  { 'tpope/vim-surround' },
+  { "tpope/vim-dispatch" },
+  { 'vim-test/vim-test' },
+  { "preservim/vimux" },
+  { 'preservim/nerdtree' },
   {
     'jacoborus/tender.vim',
     lazy = false,
@@ -38,25 +43,12 @@ require("lazy").setup({
     'nvim-telescope/telescope.nvim', tag = '0.1.5',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
-  {
-    'rose-pine/neovim',
-    as = 'rose-pine',
-    config = function()
-      vim.cmd('colorscheme rose-pine')
-    end
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
+  { 'bluz71/vim-nightfly-colors', lazy = false, },
+  { 'bluz71/vim-moonfly-colors', lazy = false, },
+  { 'catppuccin/nvim', lazy = false, },
+  { 'rose-pine/neovim', as = 'rose-pine', },
+  { "rebelot/kanagawa.nvim", lazy = false, },
+  { "folke/tokyonight.nvim", lazy = false, },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
