@@ -37,3 +37,15 @@ vim.opt.colorcolumn = "80"
 -- split preferences
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+
+-- on save clear trailing whitespace
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
+-- save on focus change
+vim.api.nvim_create_autocmd({"FocusLost", "BufLeave"}, {
+  pattern = { "*" },
+  command = "silent! wa",
+})
