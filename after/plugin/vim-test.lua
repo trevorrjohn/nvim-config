@@ -6,5 +6,3 @@ vim.keymap.set("n", "<Leader>l", ":TestLast<CR>")
 vim.keymap.set("n", "<Leader>g", ":TestVisit<CR>")
 
 vim.cmd('let test#strategy="dispatch"')
-
-print "vim-test"

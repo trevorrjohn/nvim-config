@@ -12,14 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({})
-    end,
-  },
+  { "github/copilot.vim", },
   { 'dense-analysis/ale' },
   { 'tpope/vim-bundler' },
   { 'tpope/vim-endwise' },
@@ -48,6 +41,8 @@ require("lazy").setup({
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' },
   { 'bluz71/vim-nightfly-colors', lazy = false, },
   { 'NLKNguyen/papercolor-theme', lazy = false },
+  { 'HoNamDuong/hybrid.nvim', laze = false },
+  { "ellisonleao/gruvbox.nvim", lazy = false },
   { "romainl/Apprentice", lazy = false },
   { 'bluz71/vim-moonfly-colors', lazy = false, },
   { 'catppuccin/nvim', lazy = false, },

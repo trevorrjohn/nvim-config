@@ -51,12 +51,6 @@ local function setup_diagnostics(client, buffer)
   })
 end
 
-require("lspconfig").ruby_ls.setup({
-  on_attach = function(client, buffer)
-    setup_diagnostics(client, buffer)
-  end,
-})
-
 require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = {},
