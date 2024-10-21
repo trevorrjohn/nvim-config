@@ -1,5 +1,8 @@
 return {
-  {"neovim/nvim-lspconfig"},
-  {"hrsh7th/cmp-nvim-lsp"},
-  {"hrsh7th/nvim-cmp"},
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("lspconfig").ruby_lsp.setup{}
+    end,
+  },
 }
