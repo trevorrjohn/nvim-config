@@ -1,4 +1,4 @@
-require("keymaps");
-require("set");
+require("config.lazy")
+require("config.keymaps")
+require("config.set")
 
-require("lazyvim");

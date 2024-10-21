@@ -1,0 +1,16 @@
+return {
+  { "tpope/vim-bundler" },
+  { "tpope/vim-endwise" },
+  { "tpope/vim-eunuch" },
+  { "tpope/vim-fugitive" },
+  { "tpope/vim-projectionist" },
+  { "tpope/vim-rails" },
+  { "tpope/vim-rake" },
+  { "tpope/vim-repeat" },
+  { "tpope/vim-rhubarb" },
+  { "tpope/vim-surround" },
+  { "tpope/vim-dispatch" },
+  { "tomtom/tcomment_vim" },
+  { "vim-test/vim-test" },
+  { "preservim/vimux" },
+}
