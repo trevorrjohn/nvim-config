@@ -14,7 +14,7 @@ return {
           disable = {},
         },
       })
-    end
-    vim.cmd("autocmd FileType ruby setlocal indentkeys-=.")
+      vim.cmd("autocmd FileType ruby setlocal indentkeys-=.")
+    end,
   },
 }

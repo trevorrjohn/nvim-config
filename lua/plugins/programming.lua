@@ -5,7 +5,12 @@ return {
   { "tpope/vim-rails" },
   -- { "tpope/vim-rake" },
   -- { "tpope/vim-rhubarb" },
-  { "tpope/vim-dispatch" },
+  {
+    "tpope/vim-dispatch",
+    config = function()
+      vim.keymap.set("n", "<leader>cc", ":Dispatch<CR>")
+    end,
+  },
   { "tpope/vim-fugitive" },
   { "tpope/vim-repeat" },
   { "tpope/vim-surround" },
