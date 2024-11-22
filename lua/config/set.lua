@@ -1,5 +1,9 @@
 vim.opt.guicursor = ""
 
+-- autowrite
+vim.opt.autowrite = true
+vim.opt.autowriteall = true
+
 -- line numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true
