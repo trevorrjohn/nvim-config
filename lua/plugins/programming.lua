@@ -5,10 +5,22 @@ return {
   { "tpope/vim-rails" },
   -- { "tpope/vim-rake" },
   -- { "tpope/vim-rhubarb" },
+  { "elixir-editors/vim-elixir" },
   { "tpope/vim-fugitive" },
   { "tpope/vim-repeat" },
   { "tpope/vim-surround" },
-  { "tpope/vim-dispatch" },
+  {
+    "tpope/vim-dispatch",
+    config = function()
+      vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+        pattern = "*.exs",
+        callback = function()
+          vim.b.dispatch = "elixir %"
+          print("Dispatch command set for Elixir Script file!")
+        end,
+      })
+    end
+  },
   {
     "vim-test/vim-test",
     config = function()
