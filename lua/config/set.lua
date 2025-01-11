@@ -53,3 +53,15 @@ vim.api.nvim_create_autocmd({"FocusLost", "BufLeave"}, {
   pattern = { "*" },
   command = "silent! wa",
 })
+
+-- Enable transparent background
+vim.cmd [[highlight Normal guibg=NONE]]
+vim.cmd [[highlight NonText guibg=NONE]]
+
+-- let g:gruvbox_transparent_bg = 1
+--
+
+vim.api.nvim_create_user_command('So', function()
+  vim.cmd('source ' .. vim.fn.stdpath('config') .. '/init.lua')
+end, {})
+

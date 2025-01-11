@@ -4,11 +4,15 @@ return {
   -- { 'NLKNguyen/papercolor-theme', lazy = false },
   -- { 'HoNamDuong/hybrid.nvim', laze = false },
   {
-     "ellisonleao/gruvbox.nvim",
-     priority = 1000,
-     config = function()
-       vim.cmd([[colorscheme gruvbox]])
-     end,
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    opts = {
+      transparent_mode = true,
+    },
+    config = function(_, opts)
+      require("gruvbox").setup(opts)
+      vim.cmd("colorscheme gruvbox")
+    end,
   },
   -- { "romainl/Apprentice", lazy = false },
   -- { 'bluz71/vim-moonfly-colors', lazy = false, },
