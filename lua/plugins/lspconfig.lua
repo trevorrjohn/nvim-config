@@ -2,6 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      require'lspconfig'.tailwindcss.setup{}
       require("lspconfig").ruby_lsp.setup({
       })
       require("lspconfig").elixirls.setup({
