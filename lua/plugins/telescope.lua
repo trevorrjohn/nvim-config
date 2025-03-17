@@ -1,6 +1,5 @@
 return {
-  {
-    "nvim-telescope/telescope.nvim",
+  { "nvim-telescope/telescope.nvim",
   },
   {
     config = function()
@@ -13,12 +12,18 @@ return {
 
       local builtin = require("telescope.builtin")
 
+      -- normal find files
       vim.keymap.set("n", "<Leader>f", builtin.find_files, {})
+
+      -- live grep of files
       vim.keymap.set("n", "<C-f>", builtin.live_grep, {})
-      vim.keymap.set("i", "<C-f>", builtin.live_grep, {})
+
+      -- grep in command bar
       vim.keymap.set("c", "Rg", function()
         builtin.grep_string({ search = vim.fn.input("rg > ") })
       end)
+
+      -- view help tags
       vim.keymap.set("n", "<leader>vh", builtin.help_tags, {})
     end,
     "nvim-telescope/telescope-fzf-native.nvim",
