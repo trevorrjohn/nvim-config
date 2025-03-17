@@ -9,6 +9,7 @@ return {
   { "tpope/vim-fugitive" },
   { "tpope/vim-repeat" },
   { "tpope/vim-surround" },
+  { "fatih/vim-go" },
   {
     "tpope/vim-dispatch",
     config = function()
