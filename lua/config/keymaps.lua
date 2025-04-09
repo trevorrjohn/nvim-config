@@ -63,3 +63,6 @@ vim.keymap.set("c", "W", "w")
 
 -- Switch between the last two files
 vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
+
+-- open diagnostics for sidebar
+vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float)
