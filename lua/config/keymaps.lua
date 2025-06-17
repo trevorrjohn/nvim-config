@@ -34,12 +34,25 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<C-k>", function()
+  -- Try location list first
+  if #vim.fn.getloclist(0) > 0 then
+    pcall(vim.cmd, "lnext")
+  else
+    pcall(vim.cmd, "cnext")
+  end
+  vim.cmd("normal! zz")
+end)
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<C-j>", function()
+  -- Try location list first
+  if #vim.fn.getloclist(0) > 0 then
+    pcall(vim.cmd, "lprev")
+  else
+    pcall(vim.cmd, "cprev")
+  end
+  vim.cmd("normal! zz")
+end)
 
 -- save with W
 vim.keymap.set("c", "W", "w")

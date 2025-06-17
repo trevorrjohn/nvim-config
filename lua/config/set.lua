@@ -65,3 +65,30 @@ vim.api.nvim_create_user_command('So', function()
   vim.cmd('source ' .. vim.fn.stdpath('config') .. '/init.lua')
 end, {})
 
+-- Diable copilot by default
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    vim.b.copilot_enabled = false
+  end,
+})
+
+-- open quickfix if diagnostics change
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*",  -- All filetypes
+  callback = function()
+    -- Wait for diagnostics to update
+    vim.defer_fn(function()
+      local diagnostics = vim.diagnostic.get(nil, { severity = { min = vim.diagnostic.severity.WARN } })
+
+      if #diagnostics > 0 then
+        local current_win = vim.api.nvim_get_current_win()
+        vim.diagnostic.setloclist({ severity = { min = vim.diagnostic.severity.WARN } })
+        vim.api.nvim_set_current_win(current_win)
+        -- vim.cmd("lopen")
+      else
+        vim.cmd("lclose")
+      end
+    end, 200)
+  end,
+})
