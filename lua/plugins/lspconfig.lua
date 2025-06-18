@@ -69,6 +69,28 @@ return {
             },
           },
         }
+      -- zig language server
+      elseif vim.loop.fs_stat("/home/trevor/workspace/zls/zig-out/bin/zls") then
+        require("lspconfig").zls.setup{
+          settings = {
+            zls = {
+              enable_build_on_save = true,
+              build_on_save_step = "check",  -- This runs 'zig build check'
+            }
+          },
+          cmd = { "/home/trevor/workspace/zls/zig-out/bin/zls" },
+          on_attach = function(client, bufnr)
+            -- Enable format on save
+            if client.supports_method("textDocument/formatting") then
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                callback = function()
+                  vim.lsp.buf.format({ async = false })
+                end,
+              })
+            end
+          end,
+        }
       end
     end
   }

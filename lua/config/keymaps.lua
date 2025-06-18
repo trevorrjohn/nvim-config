@@ -79,3 +79,22 @@ vim.keymap.set("n", "<Leader><Leader>", "<C-^>")
 
 -- open diagnostics for sidebar
 vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float)
+
+-- Vim LSP show methods on object
+vim.keymap.set('i', '<C-k>', '<C-x><C-o>', { desc = 'Trigger omni completion' })
+
+-- Use Tab/Shift-Tab for navigation
+vim.keymap.set('i', '<Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+end, { expr = true, desc = 'Move to next completion item' })
+
+vim.keymap.set('i', '<S-Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+end, { expr = true, desc = 'Move to previous completion item' })
+
+-- Enter to confirm
+vim.keymap.set('i', '<CR>', function()
+  return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
+end, { expr = true, desc = 'Confirm completion or new line' })
+
+vim.opt.completeopt = 'menuone,noselect,noinsert'

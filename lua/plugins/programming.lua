@@ -10,6 +10,7 @@ return {
   { "tpope/vim-repeat" },
   { "tpope/vim-surround" },
   { "fatih/vim-go" },
+  { "ziglang/zig.vim" },
   {
     "tpope/vim-dispatch",
     config = function()
