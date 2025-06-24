@@ -47,3 +47,4 @@ vim.cmd [[highlight Normal guibg=NONE]]
 vim.cmd [[highlight NonText guibg=NONE]]
 
 vim.keymap.set("c", "W", "w")
+vim.keymap.set("n", "<C-c>", ":noh<CR>")

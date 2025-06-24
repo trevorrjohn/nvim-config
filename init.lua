@@ -21,23 +21,20 @@ require("config.telescope")
 require("config.treesitter")
 require("config.luasnip")
 require("config.test")
-require("config.settings")
 
 vim.g.mapleader = " "
 
 local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<C-t>", builtin.find_files, { desc = "Find files" })
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+
+vim.keymap.set("n", "<C-f>", builtin.live_grep, { desc = "Grep files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep files" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "View buffers" })
+vim.keymap.set("c", "Rg", function()
+  builtin.grep_string({ search = vim.fn.input("rg > ") })
+end)
+
 vim.keymap.set("n", "<C-p>", builtin.buffers, { desc = "View buffers" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "View buffers" })
 
-vim.api.nvim_create_user_command("ReloadConfig", function()
-  for name, _ in pairs(package.loaded) do
-    if name:match("^config") then
-      package.loaded[name] = nil
-    end
-  end
-
-  dofile(vim.env.MYVIMRC)
-  vim.notify("Config reloaded!", vim.log.levels.INFO)
-end, {})
+require("config.settings")

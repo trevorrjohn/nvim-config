@@ -1,7 +1,7 @@
 return require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "L3MON4D3/LuaSnip" },
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  {"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"},
   { "tpope/vim-surround" },
   { "tpope/vim-repeat" },
   {
@@ -23,7 +23,7 @@ return require("lazy").setup({
   },
   {
     "morhetz/gruvbox",
-    priority = 1000,
+    lazy = false,
     config = function()
       vim.opt.termguicolors = true
       vim.opt.background = "dark"   -- or "light"
