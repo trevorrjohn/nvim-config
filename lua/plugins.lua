@@ -2,6 +2,8 @@ return require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "L3MON4D3/LuaSnip" },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  { "tpope/vim-surround" },
+  { "tpope/vim-repeat" },
   {
     "nvim-telescope/telescope.nvim", tag = "0.1.5",
     dependencies = {
@@ -11,6 +13,14 @@ return require("lazy").setup({
   },
   "vim-test/vim-test",
   "tpope/vim-dispatch",
+  {
+    "preservim/nerdtree",
+    lazy = false,
+    config = function()
+      vim.keymap.set("n", '|', ":NERDTreeFind<CR>")
+      vim.keymap.set("n", '\\', ":NERDTreeToggle<CR>")
+    end,
+  },
   {
     "morhetz/gruvbox",
     priority = 1000,
