@@ -1,22 +1,20 @@
-  -- Auto format and strip trailing whitespace (only modified lines in Git)
-vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    if vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null") ~= "true\n" then return end
-    local bufnr = vim.api.nvim_get_current_buf()
-    if not vim.api.nvim_buf_get_option(bufnr, "modified") then return end
-    -- Strip whitespace only on modified diff hunks
-    vim.cmd("%s/\\s\\+$//e")
-  end,
-})
+-- save when changing buffer or window
+local autosave = vim.api.nvim_create_augroup("autosave", { clear = true })
 
--- Highlight modified lines
-  -- vim.api.nvim_create_autocmd({ "BufRead", "TextChanged", "BufWritePost" }, {
-  --   callback = function()
-  --     vim.cmd("syntax clear DiffChange")
-  --     vim.cmd("diffthis")
-  --     vim.cmd("normal! <%")
-  --     vim.cmd("normal! >%")
-  --     vim.cmd("diffupdate")
-  --   end,
-  -- })
+vim.api.nvim_create_autocmd(
+  {"FocusLost", "BufLeave", "WinLeave"},
+  {
+    group = autosave,
+    pattern = "*",
+    callback = function()
+      local buf = vim.api.nvim_get_current_buf()
+      local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+      local modifiable = vim.api.nvim_buf_get_option(buf, 'modifiable')
 
+      -- Only save normal, modifiable buffers that have a filename
+      if buftype == '' and modifiable and vim.fn.expand('%') ~= '' then
+        vim.cmd("silent! update")
+      end
+    end
+  }
+)
