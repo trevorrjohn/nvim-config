@@ -23,8 +23,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Diagnostics
 		map("n", "gl", vim.diagnostic.open_float, "Line diagnostics")
-		map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
-		map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+		map("n", "[d", vim.diagnostic.jump({ count = -1, float = false }), "Previous diagnostic")
+		map("n", "]d", vim.diagnostic.jump({ count = 1, float = false }), "Next diagnostic")
 
 		-- Telescope-powered LSP browsing
 		map("n", "<leader>fr", telescope.lsp_references, "Telescope: references")
@@ -38,7 +38,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local lua_library_paths = vim.api.nvim_get_runtime_file("", true)
 local love_types = vim.fn.expand("~/workspace/love2d-types")
-if vim.loop.fs_stat(love_types) then
+-- Use vim.fn.isdirectory() to check if the directory exists
+if vim.fn.isdirectory(love_types) == 1 then
   table.insert(lua_library_paths, love_types)
 end
 
@@ -57,3 +58,5 @@ lspconfig.lua_ls.setup({
   },
 })
 lspconfig.ruby_lsp.setup({})
+
+lspconfig.gopls.setup({})
