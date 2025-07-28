@@ -21,5 +21,12 @@ vim.keymap.set("c", "Rg", function()
   builtin.grep_string({ search = vim.fn.input("rg > ") })
 end)
 
+vim.keymap.set("n", "<C-p>",
+  function() builtin.buffers({ sorter_lastused = true, sort_mru = true }) end,
+  { desc = "View buffers" })
+vim.keymap.set("n", "<leader>fb",
+  function() builtin.buffers({ sorter_lastused = true, sort_mru = true }) end,
+  { desc = "View buffers" })
+
 require("config.settings")
 require("config.sessions")
