@@ -1,3 +1,6 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
 -- Bootstrap lazy.nvim (if not installed)
 require("config.lazy")
 
@@ -9,7 +12,6 @@ require("config.treesitter")
 require("config.luasnip")
 require("config.test")
 --
-vim.g.mapleader = " "
 
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<C-t>", builtin.find_files, { desc = "Find files" })
