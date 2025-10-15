@@ -8,9 +8,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    { import = "lazyvim.plugins" },                 -- 1) core
-    -- { import = "lazyvim.plugins.extras.lang.typescript" }, -- 2) any extras you use
-    { import = "plugins" },                         -- 3) your stuff
+    { import = "plugins" },                        
   },
   install = { colorscheme = { "gruvbox" } },
   checker = { enabled = true },

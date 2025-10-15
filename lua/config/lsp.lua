@@ -1,4 +1,3 @@
-local lspconfig = require("lspconfig")
 local telescope = require("telescope.builtin")
 
 -- Enable LSP-based completion
@@ -44,7 +43,7 @@ if vim.fn.isdirectory(love_types) == 1 then
 end
 
 -- Setup example servers (manual install required)
-lspconfig.lua_ls.setup({
+vim.lsp.config('lua_ls', {
   on_attach = function(_, bufnr)
     -- Format on save for Lua files
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -67,9 +66,9 @@ lspconfig.lua_ls.setup({
   },
 })
 
-lspconfig.ruby_lsp.setup({})
+vim.lsp.config('ruby_lsp', {})
 
-lspconfig.gopls.setup({
+vim.lsp.config("gopls", {
   on_attach = function(_, bufnr)
     -- Format on save
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -79,4 +78,13 @@ lspconfig.gopls.setup({
       end,
     })
   end,
+})
+
+
+local elixirls = vim.fn.expand("~/.local/share/mise/installs/elixir-ls/0.29.3/language_server.sh")
+
+
+vim.lsp.config("elixirls", {
+  cmd = { elixirls, "--stdio" },           -- explicit stdio
+  settings = { elixirLS = { dialyzerEnabled = false, fetchDeps = false } },
 })
