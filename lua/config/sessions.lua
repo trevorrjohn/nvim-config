@@ -5,19 +5,32 @@ local function get_session_name()
   return session_name
 end
 
+local function get_session_dir()
+  return vim.fn.stdpath("data") .. "/sessions"
+end
+
+local function get_session_file()
+  return get_session_dir() .. "/" .. get_session_name() .. ".vim"
+end
+
 local function save_session()
-  local session_name = get_session_name()
-  local session_dir = vim.fn.stdpath("data") .. "/sessions"
-  vim.fn.mkdir(session_dir, "p")
-  local session_file = session_dir .. "/" .. session_name .. ".vim"
-  vim.cmd("mksession! " .. session_file)
+  local session_dir = get_session_dir()
+
+  if vim.fn.isdirectory(session_dir) == 0 then
+    local ok = vim.fn.mkdir(session_dir, "p")
+    if ok == 0 and vim.fn.isdirectory(session_dir) == 0 then
+      return
+    end
+  end
+
+  local session_file = get_session_file()
+  pcall(vim.cmd, "mksession! " .. vim.fn.fnameescape(session_file))
 end
 
 local function load_session()
-  local session_name = get_session_name()
-  local session_file = vim.fn.stdpath("data") .. "/sessions/" .. session_name .. ".vim"
+  local session_file = get_session_file()
   if vim.fn.filereadable(session_file) == 1 then
-    vim.cmd("source " .. session_file)
+    pcall(vim.cmd, "source " .. vim.fn.fnameescape(session_file))
   end
 end
 

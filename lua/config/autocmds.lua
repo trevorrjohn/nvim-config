@@ -1,3 +1,10 @@
+vim.filetype.add({
+  extension = {
+    ex = "elixir",
+    exs = "elixir",
+  },
+})
+
 -- save when changing buffer or window
 local autosave = vim.api.nvim_create_augroup("autosave", { clear = true })
 
