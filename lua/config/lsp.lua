@@ -1,5 +1,40 @@
 local telescope = require("telescope.builtin")
 
+local function format_on_save(_, bufnr)
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    buffer = bufnr,
+    callback = function()
+      vim.lsp.buf.format({ async = false })
+    end,
+  })
+end
+
+local function notify_missing_lsp(name, cmd)
+  vim.schedule(function()
+    vim.notify(
+      string.format("LSP '%s' is enabled but '%s' is not installed or not executable", name, cmd),
+      vim.log.levels.WARN
+    )
+  end)
+end
+
+local function enable_if_available(name, cmd)
+  local is_available
+
+  if type(cmd) == "table" then
+    local bin = cmd[1]
+    is_available = vim.fn.executable(bin) == 1
+  else
+    is_available = vim.fn.executable(cmd) == 1
+  end
+
+  if is_available then
+    vim.lsp.enable(name)
+  else
+    notify_missing_lsp(name, type(cmd) == "table" and cmd[1] or cmd)
+  end
+end
+
 -- Enable LSP-based completion
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
@@ -44,15 +79,7 @@ end
 
 -- Setup example servers (manual install required)
 vim.lsp.config('lua_ls', {
-  on_attach = function(_, bufnr)
-    -- Format on save for Lua files
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format({ async = false })
-      end,
-    })
-  end,
+  on_attach = format_on_save,
   settings = {
     Lua = {
       runtime = { version = "LuaJIT" },
@@ -69,21 +96,12 @@ vim.lsp.config('lua_ls', {
 vim.lsp.config('ruby_lsp', {})
 
 vim.lsp.config("gopls", {
-  on_attach = function(_, bufnr)
-    -- Format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format({ async = false })
-      end,
-    })
-  end,
+  on_attach = format_on_save,
 })
 
-vim.lsp.config("ts_ls", {})
-
-
-local elixirls = vim.fn.expand("~/.local/share/mise/installs/elixir-ls/0.29.3/language_server.sh")
+vim.lsp.config("ts_ls", {
+  on_attach = format_on_save,
+})
 
 
 vim.lsp.config("elixirls", {
@@ -91,8 +109,10 @@ vim.lsp.config("elixirls", {
   settings = { elixirLS = { dialyzerEnabled = false, fetchDeps = false } },
 })
 
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("ruby_lsp")
-vim.lsp.enable("gopls")
-vim.lsp.enable("ts_ls")
-vim.lsp.enable("elixirls")
+local elixirls = vim.fn.expand("~/.local/share/mise/installs/elixir-ls/0.29.3/language_server.sh")
+
+enable_if_available("lua_ls", "lua-language-server")
+enable_if_available("ruby_lsp", "ruby-lsp")
+enable_if_available("gopls", "gopls")
+enable_if_available("ts_ls", "typescript-language-server")
+enable_if_available("elixirls", { elixirls, "--stdio" })
