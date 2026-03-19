@@ -18,6 +18,36 @@ local function notify_missing_lsp(name, cmd)
   end)
 end
 
+local function definition_or_picker()
+  local params = vim.lsp.util.make_position_params()
+  local results = vim.lsp.buf_request_sync(0, "textDocument/definition", params, 800)
+
+  if results then
+    local has_locations = false
+    for _, response in pairs(results) do
+      local result = response.result
+      if result then
+        if vim.tbl_islist(result) then
+          if #result > 0 then
+            has_locations = true
+            break
+          end
+        elseif result.uri or result.targetUri then
+          has_locations = true
+          break
+        end
+      end
+    end
+
+    if has_locations then
+      vim.lsp.buf.definition()
+      return
+    end
+  end
+
+  telescope.lsp_definitions()
+end
+
 local function enable_if_available(name, cmd)
   local is_available
 
@@ -46,7 +76,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- LSP core
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     map("n", "K", vim.lsp.buf.hover, "Hover documentation")
-    map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+    map("n", "gd", definition_or_picker, "Go to definition")
     map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
     map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
     map("n", "gy", vim.lsp.buf.type_definition, "Go to type definition")
@@ -95,24 +125,29 @@ vim.lsp.config('lua_ls', {
 
 vim.lsp.config('ruby_lsp', {})
 
-vim.lsp.config("gopls", {
-  on_attach = format_on_save,
-})
-
 vim.lsp.config("ts_ls", {
   on_attach = format_on_save,
 })
 
 
-vim.lsp.config("elixirls", {
-  cmd = { elixirls, "--stdio" },           -- explicit stdio
-  settings = { elixirLS = { dialyzerEnabled = false, fetchDeps = false } },
-})
+local elixirls_cmd
+if vim.fn.executable("elixir-ls") == 1 then
+  elixirls_cmd = { "elixir-ls", "--stdio" }
+else
+  notify_missing_lsp("elixirls", "elixir-ls")
+end
 
-local elixirls = vim.fn.expand("~/.local/share/mise/installs/elixir-ls/0.29.3/language_server.sh")
+if elixirls_cmd then
+  vim.lsp.config("elixirls", {
+    cmd = elixirls_cmd,
+    settings = { elixirLS = { dialyzerEnabled = false, fetchDeps = false } },
+  })
+end
 
 enable_if_available("lua_ls", "lua-language-server")
 enable_if_available("ruby_lsp", "ruby-lsp")
-enable_if_available("gopls", "gopls")
 enable_if_available("ts_ls", "typescript-language-server")
-enable_if_available("elixirls", { elixirls, "--stdio" })
+
+if elixirls_cmd then
+  vim.lsp.enable("elixirls")
+end
