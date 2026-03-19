@@ -80,6 +80,8 @@ vim.lsp.config("gopls", {
   end,
 })
 
+vim.lsp.config("ts_ls", {})
+
 
 local elixirls = vim.fn.expand("~/.local/share/mise/installs/elixir-ls/0.29.3/language_server.sh")
 
@@ -88,3 +90,9 @@ vim.lsp.config("elixirls", {
   cmd = { elixirls, "--stdio" },           -- explicit stdio
   settings = { elixirLS = { dialyzerEnabled = false, fetchDeps = false } },
 })
+
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("ruby_lsp")
+vim.lsp.enable("gopls")
+vim.lsp.enable("ts_ls")
+vim.lsp.enable("elixirls")
