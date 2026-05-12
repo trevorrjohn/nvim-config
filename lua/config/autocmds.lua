@@ -40,8 +40,7 @@ local function notify_missing_buffer_support(bufnr)
       table.insert(notices, string.format("No LSP attached for '%s'", filetype))
     end
 
-    local ok, parsers = pcall(require, "nvim-treesitter.parsers")
-    if not ok or not parsers.has_parser(filetype) then
+    if not pcall(vim.treesitter.has_parser, filetype) then
       table.insert(notices, string.format("No Treesitter parser for '%s'", filetype))
     end
 
