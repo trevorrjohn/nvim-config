@@ -48,5 +48,3 @@ vim.cmd [[highlight NonText guibg=NONE]]
 
 vim.cmd([[command! -bang -nargs=? -complete=file W write<bang> <args>]])
 vim.keymap.set("n", "<C-c>", ":noh<CR>")
-
-vim.keymap.set("i", "<Tab>", "<C-N>")

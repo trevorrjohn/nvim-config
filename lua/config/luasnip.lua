@@ -14,10 +14,14 @@ ls.add_snippets("ruby", {
 
 -- Tab / Shift-Tab to move through snippet nodes
 vim.keymap.set({ "i", "s" }, "<Tab>", function()
-  return ls.expand_or_jumpable() and ls.expand_or_jump() or "<Tab>"
+  if ls.expand_or_jumpable() then
+    ls.expand_or_jump()
+    return ""
+  end
+
+  return "<C-N>"
 end, { expr = true })
 
 vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
   return ls.jumpable(-1) and ls.jump(-1) or "<S-Tab>"
 end, { expr = true })
-
