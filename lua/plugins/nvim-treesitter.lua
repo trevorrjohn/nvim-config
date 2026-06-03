@@ -3,26 +3,28 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     lazy = false,
-    build = ":TSUpdate",
+    build = ":TSUpdate lua ruby javascript tsx json go zig c vim markdown elixir heex",
     config = function()
+      local parsers = {
+        "lua",
+        "ruby",
+        "javascript",
+        "tsx",
+        "json",
+        "go",
+        "zig",
+        "c",
+        "vim",
+        "markdown",
+        "elixir",
+        "heex",
+      }
+
       require("nvim-treesitter").setup({
-        ensure_installed = {
-          "lua",
-          "ruby",
-          "javascript",
-          "tsx",
-          "json",
-          "go",
-          "zig",
-          "c",
-          "vim",
-          "markdown",
-          "elixir",
-          "heex",
-        },
-        highlight = { enable = true },
-        indent = { enable = true },
+        install_dir = vim.fn.stdpath("data") .. "/site",
       })
+
+      require("nvim-treesitter").install(parsers)
     end,
   },
 }
