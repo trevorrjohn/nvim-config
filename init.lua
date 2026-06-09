@@ -19,9 +19,10 @@ vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 
 vim.keymap.set("n", "<C-f>", builtin.live_grep, { desc = "Grep files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep files" })
-vim.api.nvim_create_user_command("Rg", function()
-  builtin.grep_string({ search = vim.fn.input("rg > ") })
-end, {})
+vim.api.nvim_create_user_command("Rg", function(args)
+  local search = args.args ~= "" and args.args or vim.fn.input("rg > ")
+  builtin.grep_string({ search = search })
+end, { nargs = "*" })
 
 vim.keymap.set("n", "<C-p>",
   function() builtin.buffers({ sorter_lastused = true, sort_mru = true }) end,
