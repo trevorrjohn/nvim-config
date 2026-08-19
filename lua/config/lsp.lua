@@ -1,12 +1,12 @@
 local telescope = require("telescope.builtin")
 
-local function format_on_save(_, bufnr)
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    buffer = bufnr,
-    callback = function()
-      vim.lsp.buf.format({ async = false })
-    end,
-  })
+local function format_buffer(async)
+  local ok, conform = pcall(require, "conform")
+  if ok then
+    conform.format({ async = async, lsp_format = "fallback" })
+  else
+    vim.lsp.buf.format({ async = async })
+  end
 end
 
 local function notify_missing_lsp(name, cmd)
@@ -16,6 +16,30 @@ local function notify_missing_lsp(name, cmd)
       vim.log.levels.WARN
     )
   end)
+end
+
+local function notify_disabled_lsp(name, reason)
+  vim.schedule(function()
+    vim.notify(string.format("LSP '%s' was not enabled: %s", name, reason), vim.log.levels.WARN)
+  end)
+end
+
+local function mise_shim_error(cmd)
+  if type(cmd) == "table" then
+    cmd = cmd[1]
+  end
+
+  local path = vim.fn.exepath(cmd)
+  if path == "" or not path:find("/mise/shims/", 1, true) or vim.fn.executable("mise") ~= 1 then
+    return nil
+  end
+
+  local result = vim.system({ "mise", "which", cmd }, { text = true }):wait()
+  if result.code == 0 then
+    return nil
+  end
+
+  return string.format("mise shim '%s' is not active; run `mise use` in the project that needs it", cmd)
 end
 
 local function definition_or_picker()
@@ -58,10 +82,14 @@ local function enable_if_available(name, cmd)
     is_available = vim.fn.executable(cmd) == 1
   end
 
-  if is_available then
+  local shim_error = is_available and mise_shim_error(cmd)
+
+  if is_available and not shim_error then
     vim.lsp.enable(name)
+  elseif shim_error then
+    notify_disabled_lsp(name, shim_error)
   else
-    notify_missing_lsp(name, type(cmd) == "table" and cmd[1] or cmd)
+    notify_missing_lsp(name, shim_error or (type(cmd) == "table" and cmd[1] or cmd))
   end
 end
 
@@ -83,7 +111,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "gr", vim.lsp.buf.references, "Find references")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
-    map("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, "Format buffer")
+    map("n", "<leader>lf", function() format_buffer(true) end, "Format buffer")
 
     -- Diagnostics
     map("n", "gl", vim.diagnostic.open_float, "Line diagnostics")
@@ -109,7 +137,6 @@ end
 
 -- Setup example servers (manual install required)
 vim.lsp.config('lua_ls', {
-  on_attach = format_on_save,
   settings = {
     Lua = {
       runtime = { version = "LuaJIT" },
@@ -126,7 +153,6 @@ vim.lsp.config('lua_ls', {
 vim.lsp.config('ruby_lsp', {})
 
 vim.lsp.config("ts_ls", {
-  on_attach = format_on_save,
 })
 
 
